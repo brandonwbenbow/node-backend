@@ -1,0 +1,1 @@
+// Returns HTML / View Equivalent

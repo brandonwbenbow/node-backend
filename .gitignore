@@ -1,4 +1,8 @@
 node_modules/
 
-src/Types/**/*
-!src/Types/Model.ts
+src/Type/**/*
+!src/Type/Model.ts
+
+.env
+
+log/
