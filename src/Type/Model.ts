@@ -1,3 +1,3 @@
-export type Model = {
+export interface Model {
     
 }

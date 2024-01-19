@@ -26,7 +26,6 @@ export class DatabaseManager {
 
     async Configure() {
         let result = await this.Sequel.authenticate();
-        console.log();
         Logger.Write(`Connection Result: ${result}`);
     }
 }
