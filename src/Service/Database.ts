@@ -4,9 +4,7 @@ import { Logger } from "./Logger";
 import { Model } from "../Type/Model";
 
 export class DatabaseManager {
-
     private Sequel;
-
     private Models = new Set<Model>();
 
     constructor() {
