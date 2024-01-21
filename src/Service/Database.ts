@@ -23,7 +23,12 @@ export class DatabaseManager {
     }
 
     async Configure() {
-        let result = await this.Sequel.authenticate();
-        Logger.Write(`Connection Result: ${result}`);
+        let promise = await new Promise((res, rej) => {
+            this.Sequel.authenticate().then(() => { res(true); }).catch(() => { res(false); });
+        });
+
+        if(!promise) { Logger.Write(`Failure Connecting to Database.`); return false; }
+
+        // Configure, Connection was Authenticated
     }
 }

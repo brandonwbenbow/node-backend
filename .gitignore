@@ -1,8 +1,7 @@
 node_modules/
-
-src/Type/**/*
-!src/Type/Model.ts
-
 .env
 
+# Non Module Code (Project Dependent - For Test)
 log/
+src/Model/**/*
+Client/

@@ -19,12 +19,12 @@ export interface SessionManagerConfig extends SessionOptions {
 }
 
 export class SessionManager {
-    private config: SessionManagerConfig;
+    private config: SessionManagerConfig | { secret: string };
     private sessionParser: RequestHandler | undefined;
     private redisStore: RedisStore | undefined; // can handle other express-compatible stores
 
-    constructor(config: SessionManagerConfig) {
-        this.config = config;
+    constructor(config?: SessionManagerConfig) {
+        this.config = config ?? { secret: 'secret' };
     }
 
     ConfigureRedisStore(prefix: string, client: RedisClientType) {
