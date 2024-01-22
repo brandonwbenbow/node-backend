@@ -8,8 +8,8 @@ export class Server {
         return s;
     }
 
-    private RedisStore = new SessionManager();
-    private DBManager = new DatabaseManager();
+    private Session = new SessionManager();
+    private DB = new DatabaseManager();
 
     constructor() {}
 
