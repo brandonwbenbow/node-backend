@@ -3,7 +3,7 @@ import { RedisClientOptions, RedisClientType, RedisFunctions, RedisModules, Redi
 import RedisStore from "connect-redis";
 
 import session, { SessionOptions, Session } from 'express-session';
-import { RequestHandler } from "express";
+import { RequestHandler, Request } from "express";
 
 export class RedisClient {
     private client: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
@@ -35,5 +35,9 @@ export class SessionManager {
     ConfigureSessinParser(store?: RedisStore, options?: SessionOptions) {
         this.sessionParser = session({ store: store ?? this.redisStore, ...(options ? options : this.config) });
         return this.sessionParser;
+    }
+
+    HandleRequest(request: Request) {
+        
     }
 }
