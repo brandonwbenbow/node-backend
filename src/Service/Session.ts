@@ -43,7 +43,8 @@ export class SessionManager {
         return this.handler;
     }
 
-    HandleRequest(request: Request, response: Response, next: any) {
+    // Arrow Function for Direct Passing
+    HandleRequest = (request: Request, response: Response, next: any) => {
         if(!this.handler) { return next(); }
 
         // applies session to request
