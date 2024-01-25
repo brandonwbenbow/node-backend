@@ -10,3 +10,9 @@ export const UTCDateTime: (date?: Date) => string = (date = new Date()) => {
     str += `.${PadNumber(t.getUTCMilliseconds(), 3)}`;
     return str.trim();
 }
+
+export const UTCDate: (date?: Date) => string = (date = new Date()) => {
+    let t = date;
+    let str = `${t.getUTCFullYear}-${PadNumber(t.getUTCMonth() + 1)}-${PadNumber(t.getUTCDate())}`;
+    return str.trim();
+}

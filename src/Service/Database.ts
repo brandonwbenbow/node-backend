@@ -2,13 +2,15 @@ import { Dialect, Sequelize } from "sequelize";
 
 import { Logger } from "./Logger";
 import { Model } from "../Type/Model";
+import { Event, EventType } from "./Event";
 
 export class DatabaseManager {
-    private Sequel;
     private Models = new Set<Model>();
 
+    private handler: Sequelize | undefined;
+
     constructor() {
-        this.Sequel = new Sequelize(
+        this.handler = new Sequelize(
             process.env?.DATABASE_NAME ?? 'database', 
             process.env?.DATABASE_USER ?? 'postgres', 
             process.env?.DATABASE_PASSWORD ?? 'postgres', 
@@ -24,11 +26,12 @@ export class DatabaseManager {
 
     async Configure() {
         let promise = await new Promise((res, rej) => {
-            this.Sequel.authenticate().then(() => { res(true); }).catch(() => { res(false); });
+            this.handler?.authenticate().then(() => { res(true); }).catch(() => { res(false); });
         });
 
         if(!promise) { Logger.Write(`Failure Connecting to Database.`); return false; }
 
         // Configure, Connection was Authenticated
+            // Event.Emit(EventType.Database_Ready, true); -> for cross service event
     }
 }
