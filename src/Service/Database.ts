@@ -4,12 +4,17 @@ import { Logger } from "./Logger";
 import { Model } from "../Type/Model";
 import { Event, EventType } from "./Event";
 
+export class DatabaseManagerConfig {
+
+}
+
 export class DatabaseManager {
     private Models = new Set<Model>();
 
+    private config: DatabaseManagerConfig | undefined;
     private handler: Sequelize | undefined;
 
-    constructor() {
+    constructor(config?: DatabaseManagerConfig) {
         this.handler = new Sequelize(
             process.env?.DATABASE_NAME ?? 'database', 
             process.env?.DATABASE_USER ?? 'postgres', 

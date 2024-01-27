@@ -1,10 +1,12 @@
 import { readFile, readdir } from "fs/promises";
+import { Server as HTTPServer } from "http";
 import { join } from "path";
 
 import express from "express";
 
 import { DatabaseManager } from "./Database";
 import { SessionManager } from "./Session";
+import { ChatManager } from "./Chat";
 
 export interface ServerConfig {
 
@@ -17,14 +19,20 @@ export class Server {
         return s;
     }
 
-    private Config: ServerConfig;
     private App = express();
 
-    private Session = new SessionManager();
+    // Mandatory Services? - might make these optional as well
     private DB = new DatabaseManager();
+    private Session = new SessionManager();
+
+    // Optional Services?
+    private Chat = new ChatManager({ server: this });
+
+    private config: ServerConfig;
+    private listener: HTTPServer | undefined;
 
     constructor(config?: ServerConfig) {
-        this.Config = config ?? {} as ServerConfig;
+        this.config = config ?? {} as ServerConfig;
     }
 
     async Configure(config?: ServerConfig) {
@@ -41,8 +49,8 @@ export class Server {
     }
 
     async Start() {
-        await this.Configure(this.Config);
-        this.App.listen(process.env.PORT ?? 8000);
+        await this.Configure(this.config);
+        this.listener = this.App.listen(process.env.PORT ?? 8000);
     }
 
     HandleRequest = async (req: express.Request) => {
@@ -52,4 +60,7 @@ export class Server {
         const callback = file[req.method] ?? (() => { console.log("Method not found..."); });
         callback();
     }
+
+    // Chat Server Handles Upgrade for Itself, Given acces to Server Class Instance for noServer Config
+    GetListener() { return this.listener; }
 }
