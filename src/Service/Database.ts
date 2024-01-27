@@ -1,20 +1,23 @@
 import { Dialect, Sequelize } from "sequelize";
 
 import { Logger } from "./Logger";
-import { Model } from "../Type/Model";
 import { Event, EventType } from "./Event";
 
-export class DatabaseManagerConfig {
+import { Model } from "../Type/Model";
+import { Service, ServiceConfig } from "../Type/Service";
+
+export interface DatabaseServiceConfig extends ServiceConfig {
 
 }
 
-export class DatabaseManager {
+export class DatabaseService extends Service {
     private Models = new Set<Model>();
 
-    private config: DatabaseManagerConfig | undefined;
     private handler: Sequelize | undefined;
 
-    constructor(config?: DatabaseManagerConfig) {
+    constructor(config?: DatabaseServiceConfig) {
+        super(config);
+
         this.handler = new Sequelize(
             process.env?.DATABASE_NAME ?? 'database', 
             process.env?.DATABASE_USER ?? 'postgres', 
@@ -25,8 +28,10 @@ export class DatabaseManager {
                 dialect: (process.env?.DATABASE_TYPE ?? 'postgres') as Dialect
             }
         );
+    }
 
-        this.Configure();
+    async Start() {
+        await this.Configure();
     }
 
     async Configure() {

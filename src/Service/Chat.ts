@@ -5,18 +5,22 @@
 import { WebSocketServer } from 'ws';
 
 import { Server } from './Server';
+import { Service, ServiceConfig } from '../Type/Service';
 
-export interface ChatManagerConfig {
-    server: Server
+export interface ChatManagerConfig extends ServiceConfig {
+
 }
 
-export class ChatManager {
+export class ChatService extends Service {
     private SocketServer: WebSocketServer;
 
-    private config: ChatManagerConfig | undefined;
-
     constructor(config?: ChatManagerConfig) {
+        super(config);
         this.SocketServer =  new WebSocketServer({ noServer: !!config?.server });
+    }
+
+    async Start() {
+        
     }
 
     // handling upgrade, if passed Server instance use that, if not use your own

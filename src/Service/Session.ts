@@ -7,6 +7,7 @@ import { RequestHandler, Request, Response } from "express";
 
 import { Logger } from "./Logger";
 import { User } from "../Model/User";
+import { Service, ServiceConfig } from "../Type/Service";
 
 export class RedisClient {
     private handler: RedisClientType<RedisModules, RedisFunctions, RedisScripts> | undefined;
@@ -18,17 +19,20 @@ export class RedisClient {
     // Extend with Helpers
 }
 
-export interface SessionManagerConfig extends SessionOptions {
+export interface SessionServiceConfig extends SessionOptions, ServiceConfig {
     // non SessionOptions stuff here
 }
 
-export class SessionManager {
-    private config: SessionManagerConfig | undefined;
+export class SessionService extends Service {
     private handler: RequestHandler | undefined;
     private store: RedisStore | undefined; // can handle other express-compatible stores
 
-    constructor(config?: SessionManagerConfig) {
-        this.config = config;;
+    constructor(config?: SessionServiceConfig) {
+        super(config);
+    }
+
+    async Start() {
+        
     }
 
     ConfigureRedisStore(prefix: string, client: RedisClientType) {

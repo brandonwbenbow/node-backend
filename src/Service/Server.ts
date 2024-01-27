@@ -4,9 +4,11 @@ import { join } from "path";
 
 import express from "express";
 
-import { DatabaseManager } from "./Database";
-import { SessionManager } from "./Session";
-import { ChatManager } from "./Chat";
+import { DatabaseService } from "./Database";
+import { SessionService } from "./Session";
+import { ChatService } from "./Chat";
+
+import { Service } from "../Type/Service";
 
 export interface ServerConfig {
 
@@ -21,12 +23,10 @@ export class Server {
 
     private App = express();
 
-    // Mandatory Services? - might make these optional as well
-    private DB = new DatabaseManager();
-    private Session = new SessionManager();
-
-    // Optional Services?
-    private Chat = new ChatManager({ server: this });
+    // Will be moved to index file, all services being optional -- TODO
+    private DB = new DatabaseService();
+    private Session = new SessionService();
+    private Chat = new ChatService({ server: this });
 
     private config: ServerConfig;
     private listener: HTTPServer | undefined;
@@ -50,7 +50,11 @@ export class Server {
 
     async Start() {
         await this.Configure(this.config);
-        this.listener = this.App.listen(process.env.PORT ?? 8000);
+        this.listener = this.App.listen(process.env.PORT ?? 8000, () => { console.log("Listening..."); });
+    }
+
+    async AddService(service: Service) {
+
     }
 
     HandleRequest = async (req: express.Request) => {

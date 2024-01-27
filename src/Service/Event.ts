@@ -1,5 +1,7 @@
 import EventEmitter from "events";
 
+import { Service, ServiceConfig } from "../Type/Service";
+
 export enum EventType {
     Failure = 0,
     Database_Failure = 100,
@@ -18,4 +20,18 @@ export class Event {
     static RemoveAll = (type: EventType) => { this.Emitter.removeAllListeners(Event.Type(type)); }
 
     constructor(type: EventType, ...data: any[]) { Event.Emit(type, ...data); }
+}
+
+export interface EventServiceConfig extends ServiceConfig {
+
+}
+
+export class EventService extends Service {
+    constructor(config?: EventServiceConfig) {
+        super(config);
+    }
+
+    async Start() {
+        
+    }
 }
