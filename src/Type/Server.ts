@@ -4,11 +4,11 @@ import { join } from "path";
 
 import express from "express";
 
-import { DatabaseService } from "./Database";
-import { SessionService } from "./Session";
-import { ChatService } from "./Chat";
+import { DatabaseService } from "../Service/Database";
+import { SessionService } from "../Service/Session";
+import { ChatService } from "../Service/Chat";
 
-import { Service } from "../Type/Service";
+import { Service } from "./Service";
 
 export interface ServerConfig {
 

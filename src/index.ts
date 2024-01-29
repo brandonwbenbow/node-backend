@@ -1,4 +1,4 @@
-import { Server } from "./Service/Server";
+import { Server } from "./Type/Server";
 import 'dotenv/config';
 
 // console.log("Process Variables:", process.env);
