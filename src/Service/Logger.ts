@@ -2,6 +2,7 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 
 import { UTCDate, UTCDateTime } from "../Utility";
+import { Service, ServiceConfig } from "../Type/Service";
 
 export interface LogOptions {
     time?: boolean,
@@ -21,5 +22,19 @@ export class Logger {
 
     static async Post() {
         // sends log text to remote server, same formatting
+    }
+}
+
+export interface LogServiceConfig extends ServiceConfig {
+
+}
+
+export class LogService extends Service {
+    constructor(config?: LogServiceConfig) {
+        super(config);
+    }
+
+    async Start() {
+
     }
 }
