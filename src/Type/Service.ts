@@ -7,7 +7,7 @@ export interface ServiceConfig {
     server: Server | undefined
 }
 
-export abstract class Service {
+export abstract class Service { 
     protected config: ServiceConfig;
 
     constructor(config?: ServiceConfig) {
@@ -18,4 +18,6 @@ export abstract class Service {
     }
 
     abstract Start(): Promise<void>
+
+    GetName() { return this.constructor.name.split('Service').join(''); }
 }

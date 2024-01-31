@@ -16,8 +16,6 @@ export interface ServerConfig {
 
 }
 
-type ServiceType = 'Database' | 'Session' | 'Chat' | 'Event';
-
 // Imports Database/Session for Self Management, Should try to isolate it from models
 export class Server {
     static async Start(config?: ServerConfig, ...services: Service[]) {
@@ -25,23 +23,23 @@ export class Server {
     }
 
     private App = express();
-    private ServiceMap = new Map<string, Service>();
+    private Service: { [key: string]: Service | undefined } = {}
 
     private config: ServerConfig;
     private listener: HTTPServer | undefined;
 
     constructor(config?: ServerConfig, ...services: Service[]) {
         this.config = config ?? {} as ServerConfig;
-        services.forEach(service => { this.AddService(service.constructor.name, service); });
+        services.forEach(service => { this.AddService(service); });
         console.log("Server Constuctor Finished...");
     }
 
     async Configure(config?: ServerConfig) {
         //// Service Routes
         // Session
-        // if(this.Service.Session) {
-        //     this.App.use(this.Service.Session.HandleRequest);
-        // }
+        if(this.Service?.Session) {
+            this.App.use((this.Service.Session as SessionService).HandleRequest);
+        }
 
         // Auto-Route and Catch All
         this.App.all('*', async (req, res, next) => {
@@ -56,9 +54,7 @@ export class Server {
         return this;
     }
 
-    async AddService(name: string, service: Service) {
-        // still figuring out dynamic services
-    }
+    async AddService(service: Service) { this.Service[service.GetName()] = service; }
 
     HandleRequest = async (req: Request, res: Response, next: NextFunction) => {
         let path = req.url.split('/').filter((val) => !!val);
