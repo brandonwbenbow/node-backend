@@ -31,7 +31,6 @@ export class Server {
     constructor(config?: ServerConfig, ...services: Service[]) {
         this.config = config ?? {} as ServerConfig;
         services.forEach(service => { this.AddService(service); });
-        console.log("Server Constuctor Finished...");
     }
 
     async Configure(config?: ServerConfig) {
@@ -41,16 +40,19 @@ export class Server {
             this.App.use((this.Service.Session as SessionService).HandleRequest);
         }
 
+        // Database -- todo
+
         // Auto-Route and Catch All
-        this.App.all('*', async (req, res, next) => {
-            let result = await this.HandleRequest(req, res, next);
-        });
+        this.App.all('*', async (req, res, next) => { await this.HandleRequest(req, res, next); });
     }
 
     async Start() {
         await this.Configure(this.config);
-        this.listener = this.App.listen(process.env.PORT ?? 8000, () => { console.log("Listening..."); });
-        console.log("Starting Server...");
+        await new Promise((res, rej) => { this.listener = this.App.listen(process.env.PORT ?? 8000, () => { 
+            console.log("Listening..."); res(null); 
+        }); });
+
+        console.log("Server Started...");
         return this;
     }
 
