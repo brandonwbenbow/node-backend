@@ -16,3 +16,17 @@ export const UTCDate: (date?: Date) => string = (date = new Date()) => {
     let str = `${t.getUTCFullYear}-${PadNumber(t.getUTCMonth() + 1)}-${PadNumber(t.getUTCDate())}`;
     return str.trim();
 }
+
+export const LoadDirectoryExports = (...path: string[]) => {
+    var normalizedPath = require("path").join(...path);
+    console.log("Loading Directory Exports from:", normalizedPath);
+
+    let exports: any = {};
+    require("fs").readdirSync(normalizedPath).forEach((file: any) => {
+        exports[file] = require(normalizedPath + "/" + file);
+    });
+
+    return exports;
+}
+
+
