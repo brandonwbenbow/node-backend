@@ -49,10 +49,11 @@ export class Server {
     async Start() {
         await this.Configure(this.config);
         await new Promise((res, rej) => { this.listener = this.App.listen(process.env.PORT ?? 8000, () => { 
-            console.log("Listening..."); res(null); 
+            // console.log("Listening..."); 
+            res(null); 
         }); });
 
-        console.log("Server Started...");
+        // console.log("Server Started...");
         return this;
     }
 

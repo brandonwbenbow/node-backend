@@ -2,5 +2,6 @@
     // Can be ignored and database can be manually handled.
 
 export interface Model {
-    asModel: string
+    asModel: string,
+    matchesTable: (table: string) => boolean
 }
